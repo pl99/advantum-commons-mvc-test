@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
         "eureka.client.enabled=false"
         , "spring.cloud.config.discovery.enabled=false"
         , "spring.liquibase.enabled=false"
+        , "spring.flyway.enabled=false"
 })
 
 public abstract class BaseControllerTest {
