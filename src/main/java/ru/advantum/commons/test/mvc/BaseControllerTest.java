@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -33,28 +34,32 @@ public abstract class BaseControllerTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(url, id)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForGet(executeIt(requestBuilder), url, id);
     }
+
     protected void mockGetRequest(String url) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(url)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForGet(executeIt(requestBuilder), url);
     }
+
     protected void mockPostRequest(String url, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForPost(executeIt(requestBuilder), url, content);
     }
+
     protected void mockPutRequest(String url, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForPut(executeIt(requestBuilder), url, content);
     }
+
     protected void mockPutRequest(String url, String id, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url, id)
@@ -62,25 +67,55 @@ public abstract class BaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
         executeIt(requestBuilder);
     }
-    protected void mockPutRequest(String url,Long id, String content) {
+
+    protected void mockPutRequest(String url, Long id, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url, id)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForPut(executeIt(requestBuilder), url, id, content);
     }
+
     protected void mockDeleteRequest(String url, String content) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForDelete(executeIt(requestBuilder), url, content);
     }
 
     @SneakyThrows({Exception.class})
-    private void executeIt(MockHttpServletRequestBuilder requestBuilder) {
-        mockMvc.perform(requestBuilder)
+    private ResultActions executeIt(MockHttpServletRequestBuilder requestBuilder) {
+        return mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print())
+                ;
     }
+
+
+    /**
+     * Можно реализовать в наследнике и проверить результат запроса {@code resultAction}
+     *
+     * @param resultActions
+     * @param url
+     * @param id
+     */
+    protected void assertionForGet(ResultActions resultActions, String url, Long id) {
+    }
+
+    protected void assertionForGet(ResultActions resultActions, String url) {
+    }
+
+    protected void assertionForPost(ResultActions resultActions, String url, String content) {
+    }
+
+    protected void assertionForPut(ResultActions resultActions, String url, String content) {
+    }
+
+    protected void assertionForPut(ResultActions resultActions, String url, Long id, String content) {
+    }
+
+    protected void assertionForDelete(ResultActions resultActions, String url, String content) {
+    }
+
 
 }
