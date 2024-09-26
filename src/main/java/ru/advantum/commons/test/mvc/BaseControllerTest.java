@@ -1,5 +1,6 @@
 package ru.advantum.commons.test.mvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,6 +31,8 @@ public abstract class BaseControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
+    @Autowired
+    protected ObjectMapper mapper;
 
     protected void mockGetRequest(String url, Long id) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -65,7 +69,7 @@ public abstract class BaseControllerTest {
                 .put(url, id)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        executeIt(requestBuilder);
+        assertionForPut(executeIt(requestBuilder), id, content);
     }
 
     protected void mockPutRequest(String url, Long id, String content) {
@@ -84,37 +88,36 @@ public abstract class BaseControllerTest {
     }
 
     @SneakyThrows({Exception.class})
-    private ResultActions executeIt(MockHttpServletRequestBuilder requestBuilder) {
+    private MvcResult executeIt(MockHttpServletRequestBuilder requestBuilder) {
         return mockMvc.perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
-                ;
+                .andReturn();
     }
-
 
     /**
      * Можно реализовать в наследнике и проверить результат запроса {@code resultAction}
      *
-     * @param resultActions
+     * @param result
      * @param url
      * @param id
      */
-    protected void assertionForGet(ResultActions resultActions, String url, Long id) {
+    protected void assertionForGet(MvcResult result, String url, Long id) {
     }
 
-    protected void assertionForGet(ResultActions resultActions, String url) {
+    protected void assertionForGet(MvcResult result, String url) {
     }
 
-    protected void assertionForPost(ResultActions resultActions, String url, String content) {
+    protected void assertionForPost(MvcResult result, String url, String content) {
     }
 
-    protected void assertionForPut(ResultActions resultActions, String url, String content) {
+    protected void assertionForPut(MvcResult result, String url, String content) {
     }
 
-    protected void assertionForPut(ResultActions resultActions, String url, Long id, String content) {
+    protected void assertionForPut(MvcResult result, String url, Long id, String content) {
     }
 
-    protected void assertionForDelete(ResultActions resultActions, String url, String content) {
+    protected void assertionForDelete(MvcResult result, String url, String content) {
     }
 
 
