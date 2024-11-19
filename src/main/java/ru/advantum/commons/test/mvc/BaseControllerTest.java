@@ -34,57 +34,71 @@ public abstract class BaseControllerTest {
     @Autowired
     protected ObjectMapper mapper;
 
-    protected void mockGetRequest(String url, Long id) {
+    protected MvcResult mockGetRequest(String url, Long id) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(url, id)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForGet(executeIt(requestBuilder), url, id);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForGet(result, url, id);
+        return result;
     }
 
-    protected void mockGetRequest(String url) {
+    protected MvcResult mockGetRequest(String url) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get(url)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForGet(executeIt(requestBuilder), url);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForGet(result, url);
+        return result;
     }
 
-    protected void mockPostRequest(String url, String content) {
+    protected MvcResult mockPostRequest(String url, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForPost(executeIt(requestBuilder), url, content);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForPost(result, url, content);
+        return result;
     }
 
-    protected void mockPutRequest(String url, String content) {
+    protected MvcResult mockPutRequest(String url, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForPut(executeIt(requestBuilder), url, content);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForPut(result, url, content);
+        return result;
     }
 
-    protected void mockPutRequest(String url, String id, String content) {
+    protected MvcResult mockPutRequest(String url, String id, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url, id)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForPut(executeIt(requestBuilder), id, content);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForPut(result, id, content);
+        return result;
     }
 
-    protected void mockPutRequest(String url, Long id, String content) {
+    protected MvcResult mockPutRequest(String url, Long id, String content) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
                 .put(url, id)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForPut(executeIt(requestBuilder), url, id, content);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForPut(result, url, id, content);
+        return result;
     }
 
-    protected void mockDeleteRequest(String url, String content) throws Exception {
+    protected MvcResult mockDeleteRequest(String url, String content) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete(url)
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON);
-        assertionForDelete(executeIt(requestBuilder), url, content);
+        MvcResult result = executeIt(requestBuilder);
+        assertionForDelete(result, url, content);
+        return result;
     }
 
     @SneakyThrows({Exception.class})
