@@ -21,7 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("local")
 @TestPropertySource(properties = {
-        "eureka.client.enabled=false"
+        "eureka.client.register-with-eureka=false"
+        ,"eureka.client.fetch-registry=true"
         , "spring.cloud.config.discovery.enabled=false"
         , "spring.liquibase.enabled=false"
         , "spring.flyway.enabled=false"
